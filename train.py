@@ -191,6 +191,7 @@ if __name__ == "__main__":
     torch.cuda.manual_seed(42)
     torch.set_float32_matmul_precision("high")
     device = torch.device("cuda")
+    torch.cuda.reset_peak_memory_stats()
     autocast = torch.amp.autocast(device_type="cuda", dtype=torch.float16)
 
     # Build model
@@ -213,18 +214,16 @@ if __name__ == "__main__":
     print("Starting training...\n")
     model, history = train(model, train_loader, val_loader, epochs=1)
 
-    # Final eval
-    model.eval()
-    with autocast:
-        val_loss, val_acc = evaluate(model, val_loader, device)
-    print(f"Final val_loss: {val_loss:.4f}, val_acc: {val_acc:.4f}")
+    # Get final validation metrics from history (evaluated at end of each epoch)
+    final_val_loss = history['val_loss'][-1]
+    final_val_acc = history['val_acc'][-1]
+
+    # Memory usage (captured after training)
+    max_memory_gb = torch.cuda.max_memory_allocated(device) / (1024**3)
 
     # Summary
     print("\n=== Training Complete ===")
     print(f"Epochs: 1")
-    print(f"Final val_loss: {history['val_loss'][-1]:.4f}")
-    print(f"Final val_acc: {history['val_acc'][-1]:.4f}")
-
-    # Memory usage
-    max_memory_gb = torch.cuda.max_memory_allocated(device) / (1024**3)
+    print(f"Final val_loss: {final_val_loss:.4f}")
+    print(f"Final val_acc: {final_val_acc:.4f}")
     print(f"Peak memory: {max_memory_gb:.1f} GB")
