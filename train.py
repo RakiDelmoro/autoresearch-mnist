@@ -154,7 +154,7 @@ def train(model: MLP, train_loader, val_loader, epochs: int = 1):
         # LR schedule
         scheduler.step()
 
-        print(f"Epoch {epoch+1}/{epochs} | train_loss: {train_loss:.4f} | train_acc: {train_acc:.4f} | val_loss: {val_loss:..4f} | val_acc: {val_acc:.4f}")
+        print(f"Epoch {epoch+1}/{epochs} | train_loss: {train_loss:.4f} | train_acc: {train_acc:.4f} | val_loss: {val_loss:.4f} | val_acc: {val_acc:.4f}")
 
     return model, history
 
