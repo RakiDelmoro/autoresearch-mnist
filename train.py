@@ -28,7 +28,7 @@ class MLPConfig:
     """Model configuration for MNIST classification."""
     image_size: int = 28            # MNIST images are 28x28
     image_channels: int = 1         # grayscale
-    hidden_dim: int = 128           # hidden layer dimension
+    hidden_dim: int = 256           # hidden layer dimension (increased)
     num_classes: int = 10           # MNIST has 10 classes
     dropout: float = 0.1            # dropout rate
     num_hidden_layers: int = 2      # number of hidden layers (default: 2)
