@@ -30,7 +30,7 @@ class MLPConfig:
     image_channels: int = 1         # grayscale
     hidden_dim: int = 8192          # hidden layer dimension (maximum) (wider)
     num_classes: int = 10           # MNIST has 10 classes
-    dropout: float = 0.05           # dropout rate
+    dropout: float = 0.0            # dropout rate (none)
     num_hidden_layers: int = 2      # number of hidden layers (deeper)
 
 
