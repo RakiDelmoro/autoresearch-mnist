@@ -151,19 +151,10 @@ def train(model: MLP, train_loader, val_loader, epochs: int = 1):
         history["val_loss"].append(val_loss)
         history["val_acc"].append(val_acc)
 
-        # Save checkpoint
-        checkpoint_path = f"mnist_mlp_epoch{epoch}_lr{scheduler.get_last_lr()[0]:.6f}.pt"
-        torch.save({
-            "epoch": epoch,
-            "model_state_dict": model.state_dict(),
-            "optimizer_state_dict": optimizer.state_dict(),
-            "history": history,
-        }, checkpoint_path)
-
         # LR schedule
         scheduler.step()
 
-        print(f"Epoch {epoch+1}/{epochs} | train_loss: {train_loss:.4f} | train_acc: {train_acc:.4f} | val_loss: {val_loss:.4f} | val_acc: {val_acc:.4f}")
+        print(f"Epoch {epoch+1}/{epochs} | train_loss: {train_loss:.4f} | train_acc: {train_acc:.4f} | val_loss: {val_loss:..4f} | val_acc: {val_acc:.4f}")
 
     return model, history
 
@@ -233,3 +224,7 @@ if __name__ == "__main__":
     print(f"Epochs: 1")
     print(f"Final val_loss: {history['val_loss'][-1]:.4f}")
     print(f"Final val_acc: {history['val_acc'][-1]:.4f}")
+
+    # Memory usage
+    max_memory_gb = torch.cuda.max_memory_allocated(device) / (1024**3)
+    print(f"Peak memory: {max_memory_gb:.1f} GB")
