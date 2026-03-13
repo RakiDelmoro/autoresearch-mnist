@@ -219,7 +219,7 @@ if __name__ == "__main__":
     final_val_acc = history['val_acc'][-1]
 
     # Memory usage (captured after training)
-    max_memory_gb = torch.cuda.max_memory_allocated(device) / (1024**3)
+    max_memory_gb = torch.cuda.max_memory_allocated() / (1024**3)
 
     # Summary
     print("\n=== Training Complete ===")
