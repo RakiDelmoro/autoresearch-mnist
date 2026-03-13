@@ -1,16 +1,40 @@
 # autoresearch-mnist
-AI agents running research on MNIST task
+AI agents running research on MNIST image classification
 
-## Setup
-Branch: `autoresearch/mar13` | Data: `~/.cache/autoresearch/mnist/`
+## Quick Start
 
-## Accomplished
-- Created branch `autoresearch/mar13`
-- Downloaded MNIST training (100k images) and validation (10k images) sets
-- Converted datasets to PyTorch tensors
-- Fixed bug in `prepare.py`: `MNIST.download()` was being called with incorrect `root` parameter
-- Removed unused autoresearch config variables from `prepare.py` (left only MNIST-specific params)
-- `results.tsv` ready for logging
+Follow the experiment protocol in `program.md`. This file contains the complete instructions for autonomous research, including the experiment loop, logging, and success criteria.
 
-## Training
-See `train.py` — MLP model with `torch.compile` enabled, `dynamic=False`
+**In short:** Only modify `train.py`. Run experiments, log results to `results.tsv`, keep improving `val_acc`, never stop.
+
+## Experiment Branch
+`autoresearch/mar13-v2`
+
+## Best Result (as of Mar 13, 2026)
+**Validation Accuracy: 0.9237** (92.37%)
+
+**Best Configuration:**
+- Architecture: Single hidden layer MLP
+- Hidden dimension: 4096
+- Dropout: 0.05
+- Optimizer: AdamW (lr=0.001, weight_decay=0.1)
+- Batch size: 2048
+- Epochs: 1
+- Peak VRAM: 0.3 GB
+
+## Data
+Location: `~/.cache/autoresearch/mnist/`
+
+## Running Experiments
+```bash
+python train.py > run.log 2>&1
+```
+
+Results are logged to `results.tsv`. See `program.md` for full protocol.
+
+## Files
+- `train.py` - Training script (only file to modify)
+- `prepare.py` - Data preparation (fixed)
+- `results.tsv` - Experiment results
+- `plot_experiments.py` - Visualization script
+
