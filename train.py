@@ -31,7 +31,7 @@ class MLPConfig:
     hidden_dim: int = 1024          # hidden layer dimension (widest) (wider)
     num_classes: int = 10           # MNIST has 10 classes
     dropout: float = 0.05           # dropout rate
-    num_hidden_layers: int = 1      # number of hidden layers (simpler)
+    num_hidden_layers: int = 2      # number of hidden layers (deeper)
 
 
 class MLP(nn.Module):
