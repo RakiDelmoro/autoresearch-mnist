@@ -43,17 +43,22 @@ class MLP(nn.Module):
         input_dim = config.image_size ** 2 * config.image_channels
         self.flatten = nn.Flatten(start_dim=1, end_dim=-1)  # flatten spatial dims after batch
         # Build hidden layers dynamically
-        self.net = nn.Sequential(
-            nn.Linear(input_dim, config.hidden_dim),
-            nn.GELU(),
-            nn.Dropout(config.dropout),
-            *[nn.Sequential(
-                nn.Linear(config.hidden_dim, config.hidden_dim // 2),
-                nn.GELU(),
-                nn.Dropout(config.dropout),
-            ) for _ in range(config.num_hidden_layers)],
-            nn.Linear(config.hidden_dim // 2, config.num_classes),
-        )
+        # Build network with proper dimension chaining
+        layers = []
+        # Input layer
+        layers.append(nn.Linear(input_dim, config.hidden_dim))
+        layers.append(nn.GELU())
+        layers.append(nn.Dropout(config.dropout))
+        # Hidden layers
+        current_dim = config.hidden_dim
+        for _ in range(config.num_hidden_layers):
+            layers.append(nn.Linear(current_dim, config.hidden_dim // 2))
+            layers.append(nn.GELU())
+            layers.append(nn.Dropout(config.dropout))
+            current_dim = config.hidden_dim // 2
+        # Output layer
+        layers.append(nn.Linear(current_dim, config.num_classes))
+        self.net = nn.Sequential(*layers)
 
     def forward(self, images):
         """images: (batch_size, image_size, image_size) float tensor."""
